@@ -1,7 +1,8 @@
 const express=require("express");
 const app=express();
 const PORT=5000;
-require('./model/user')
+require('./model/user');
+app.use(require('./routes/auth'));
 const mongoose=require("mongoose");
 const {MONGOURI}=require('./keys');
 mongoose.connect(MONGOURI);
