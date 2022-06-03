@@ -1,7 +1,11 @@
-const express=require("express");
+const express=require("express")
 const router=express.Router();
 router.get('/',(req,res)=>
 {
-    res.send("hello");
+    res.send("helloworld");
 })
+// router.post('/signup',(req,res)=>
+// {
+//     console.log(req.body.name);
+// })
 module.exports=router;
