@@ -1,44 +1,30 @@
-const express=require("express")
-const app=express()
-const PORT=9000
-
+const express = require('express')
+const app = express()
+const mongoose  = require('mongoose')
+const PORT = process.env.PORT || 5000
+const {MONGOURI} = require('./keys')
 require('./model/user')
-// app.use(express.json())
-app.use(require('./routes/auth'))
-const mongoose=require("mongoose");
+app.use(express.json())
+app.use(require("./routes/auth"))
+
+
 
 mongoose.connect(MONGOURI,{
-    useNewUrlParser: true,
+    useNewUrlParser:true,
     useUnifiedTopology: true
-  
 
-    }
-)
-
-
-mongoose.connection.on("connected",()=>
-{
-    console.log("mongoose is sucessfully connected yeah");
 })
-mongoose.connection.on("error",(er)=>
-{
-    console.log("error is showing it means that database is not connected",er);
+mongoose.connection.on('connected',()=>{
+    console.log("your project is successfully connected to the database mongodb")
 })
-// mongoose.connect('mongodb://127.0.0.1/7000')
-
-// middleware();
-// const coustomMiddleware =(req,res,next)=>
-// {
-//     console.log("middleware executed successfully");
-//     next();
-// }
-// app.use(coustomMiddleware);
-app.get('/',(req,res)=>
-{
-
-    res.send("hello world");
+mongoose.connection.on('error',(err)=>{
+    console.log("your project is not connected to the databases",err)
 })
-app.listen(PORT,()=>
-{
-    console.log("server is running",PORT);
+
+
+
+
+
+app.listen(PORT,()=>{
+    console.log("server is running on",PORT)
 })
