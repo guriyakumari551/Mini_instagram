@@ -9,6 +9,7 @@ const Post =mongoose.model("Post")
 
 router.get('/allpost',requireLogin,(req,res)=>{
 Post.find()
+.populate("postedBy","_id name")
 .then(Post=>
     {
         res.json({Post})
@@ -18,6 +19,8 @@ Post.find()
             console.log(err)
         })
 })
+
+
 
 
 
@@ -52,7 +55,28 @@ router.post('/createpost',requireLogin,(req,res)=>{
 })
 
 
+// router.get('/mypost',(req,res)=>{
+//     Post.find({postedBy:req.user._id})
+//     .populate("postedBy","_id name")
+//     .then(mypost=>
+//         {
+//             res.json({mypost})
+//         })
+//         .catch(err=>{
+//                 console.log(err)
+//             })
+// })
 
+router.get('/mypost',requireLogin,(req,res)=>{
+    Post.find({postedBy:req.user._id})
+    .populate("postedBy","_id name")
+    .then(mypost=>{
+        res.json({mypost})
+    })
+    .catch(err=>{
+        console.log("the post cant be excessed")
+    })
+})
 
 
 
