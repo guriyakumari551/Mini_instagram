@@ -3,9 +3,6 @@ const app = express()
 const mongoose  = require('mongoose')
 const PORT = process.env.PORT || 5000
 const {MONGOURI} = require('./keys')
-require('./model/user')
-app.use(express.json())
-app.use(require("./routes/auth"))
 
 
 
@@ -20,6 +17,13 @@ mongoose.connection.on('connected',()=>{
 mongoose.connection.on('error',(err)=>{
     console.log("your project is not connected to the databases",err)
 })
+require('./model/user')
+require('./model/post')
+
+app.use(express.json())
+app.use(require("./routes/auth"))
+app.use(require("./routes/post"))
+
 
 
 
