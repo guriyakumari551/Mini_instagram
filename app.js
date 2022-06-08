@@ -8,14 +8,15 @@ const {MONGOURI} = require('./keys')
 
 mongoose.connect(MONGOURI,{
     useNewUrlParser:true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    family:4
 
 })
 mongoose.connection.on('connected',()=>{
     console.log("your project is successfully connected to the database mongodb")
 })
 mongoose.connection.on('error',(err)=>{
-    console.log("your project is not connected to the databases",err)
+    console.log("your project is not connected to the databases tell me reason",err)
 })
 require('./model/user')
 require('./model/post')
