@@ -30,8 +30,9 @@ Post.find()
 
 
 router.post('/createpost',requireLogin,(req,res)=>{
-    const{title,body}=req.body
-    if(!title||!body)
+    const{title,body,pic}=req.body
+    console.log(title,body,pic)
+    if(!title||!body||!pic)
     {
         return res.status(422).json({error:"please add all the feilds"})
     }
@@ -40,6 +41,7 @@ router.post('/createpost',requireLogin,(req,res)=>{
     const post=new Post({
         title,
         body,
+        photo:pic,
         postedBy:req.user
 
         
@@ -55,17 +57,6 @@ router.post('/createpost',requireLogin,(req,res)=>{
 })
 
 
-// router.get('/mypost',(req,res)=>{
-//     Post.find({postedBy:req.user._id})
-//     .populate("postedBy","_id name")
-//     .then(mypost=>
-//         {
-//             res.json({mypost})
-//         })
-//         .catch(err=>{
-//                 console.log(err)
-//             })
-// })
 
 router.get('/mypost',requireLogin,(req,res)=>{
     Post.find({postedBy:req.user._id})
