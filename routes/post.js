@@ -1,74 +1,18 @@
-const express=require("express")
-const router=express.Router();
-const mongoose=require("mongoose")
-const requireLogin=require('../middleware/requireLogin')
-const Post =mongoose.model("Post")
+import express from 'express';
+const router = express.Router();
+
+//importing controllers
+import {createPost,getAllPost,getMyPost,incLike,disLike,insertComment,deletePost,getAllFollowingPost} from '../controllers/post';
+import {requireSignin} from '../middleware/index';
 
 
+router.get('/allPost',requireSignin,getAllPost);
+router.get('/allFollowingPost',requireSignin,getAllFollowingPost);
+router.get('/myPost',requireSignin,getMyPost);
+router.post('/createPost',requireSignin,createPost);
+router.put('/like',requireSignin,incLike);
+router.put('/dislike',requireSignin,disLike);
+router.put('/comment',requireSignin,insertComment);
+router.delete('/deletePost/:postId',requireSignin,deletePost);
 
-
-router.get('/allpost',requireLogin,(req,res)=>{
-Post.find()
-.populate("postedBy","_id name")
-.then(Post=>
-    {
-        res.json({Post})
-    })
-    .catch(err=>
-        {
-            console.log(err)
-        })
-})
-
-
-
-
-
-
-
-
-
-
-router.post('/createpost',requireLogin,(req,res)=>{
-    const{title,body,pic}=req.body
-    console.log(title,body,pic)
-    if(!title||!body||!pic)
-    {
-        return res.status(422).json({error:"please add all the feilds"})
-    }
-    req.user.password=undefined
-  
-    const post=new Post({
-        title,
-        body,
-        photo:pic,
-        postedBy:req.user
-
-        
-    })
-    post.save().then(result=>
-        {
-            res.json({post:result})
-        })
-        .catch(err=>
-            {
-                console.log(err)
-            })
-})
-
-
-
-router.get('/mypost',requireLogin,(req,res)=>{
-    Post.find({postedBy:req.user._id})
-    .populate("postedBy","_id name")
-    .then(mypost=>{
-        res.json({mypost})
-    })
-    .catch(err=>{
-        console.log("the post cant be excessed")
-    })
-})
-
-
-
-module.exports=router
+module.exports = router;
